@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCPeopleSearchApplication", "HCPeopleSearchApplication\HCPeopleSearchApplication.csproj", "{C64709DC-C382-462C-A85D-2402B0751808}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCPeopleSearchApplication.Tests", "HCPeopleSearchApplication.Tests\HCPeopleSearchApplication.Tests.csproj", "{1CDF010F-BD7F-4DA4-9786-AE4D1CA76079}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C64709DC-C382-462C-A85D-2402B0751808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64709DC-C382-462C-A85D-2402B0751808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64709DC-C382-462C-A85D-2402B0751808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64709DC-C382-462C-A85D-2402B0751808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CDF010F-BD7F-4DA4-9786-AE4D1CA76079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CDF010F-BD7F-4DA4-9786-AE4D1CA76079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CDF010F-BD7F-4DA4-9786-AE4D1CA76079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CDF010F-BD7F-4DA4-9786-AE4D1CA76079}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

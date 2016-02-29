@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnSearch').bind("click",function () {
+            var searchString = $('#txtName').val();
+
+            // ajax call using Json object, send this to Person COntroller
+            
+            $.ajax({
+                type: "POST",
+                //dataType:"application/json",
+                //  data: { json: jsonData },
+                data: { searchString: searchString },               
+                url: "@Url.Action("GetPersonDetails","Person")",
+                success: function (data) {
+                    if (data.length > 0) {
+                        
+                        if (data == "emptyString") {
+                            $("#resPane").html("");
+                            $("#resPane").append("Please enter Name in the text box.");
+                            return
+                        }                                            
+                        var content = "";
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].image) {
+                                var base64string = btoa(String.fromCharCode.apply(null, new Uint8Array(data[i].image)));
+                            }
+                            
+                            // var base64string = base64ArrayBuffer(data[i].image);  //can use this for smaller images
+                            //Build a HTML table and bind JSON object
+                            content += '<table style="border:0.5px Solid grey"margin-top:1%;margin-bottom:1%><tr><td>' + '<b>First name</b> ' + data[i].FirstName + '</td>' +
+                                "<td rowspan='5'>" + '<img src="' + "data:image/jpg;base64," + base64string + '="' + "height=150 width=150>" + "</td>" +
+                                '</tr>' +
+                            "<tr><td>" + "<b>Last name</b> " + data[i].LastName + "</td></tr>" +
+                            "<tr><td>" + "<b>Age</b> " + data[i].Age + "</td></tr>" +
+                             "<tr><td>" + "<b>Address</b> " + data[i].Address + "</td></tr>" +
+                              "<tr><td>" + "<b>Interests</b> " + data[i].Interests + "</td></tr>" + "</table>"
+                            ;
+                        }
+                        $("#resPane").html("");
+                        $("#resPane").append(content);
+                    } else {
+                       
+                        $("#resPane").html("");
+                        $("#resPane").append("Sorry, No Matching Records found.");
+                    }
+                },
+                error: function (data) {                  
+                    $("#resPane").html("");
+                    $("#resPane").append("There is a problem with Network/your request, Pease try again.");
+                }
+            });
+        });
+        //Method to create Large images, 
+        //chrome is having an bug  handling Byte and arrafbuffer due to padding and sofisticated security
+        //ref: https://bugs.chromium.org/p/chromium/issues/detail?id=412479
+        function base64ArrayBuffer(arrayBuffer) {          
+            var base64 = ''
+            var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+            var bytes = new Uint8Array(arrayBuffer)
+            var byteLength = bytes.byteLength
+            var byteRemainder = byteLength % 3
+            var mainLength = byteLength - byteRemainder
+
+            var a, b, c, d
+            var chunk
+
+            // Main loop deals with bytes in chunks of 3
+            for (var i = 0; i < mainLength; i = i + 3) {
+                // Combine the three bytes into a single integer
+                chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+                // Use bitmasks to extract 6-bit segments from the triplet
+                a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+                b = (chunk & 258048) >> 12 // 258048   = (2^6 - 1) << 12
+                c = (chunk & 4032) >> 6 // 4032     = (2^6 - 1) << 6
+                d = chunk & 63               // 63       = 2^6 - 1
+
+                // Convert the raw binary segments to the appropriate ASCII encoding
+                base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+            }
+
+            // Deal with the remaining bytes and padding
+            if (byteRemainder == 1) {
+                chunk = bytes[mainLength]
+
+                a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+                // Set the 4 least significant bits to zero
+                b = (chunk & 3) << 4 // 3   = 2^2 - 1
+
+                base64 += encodings[a] + encodings[b] + '=='
+            } else if (byteRemainder == 2) {
+                chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+                a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+                b = (chunk & 1008) >> 4 // 1008  = (2^6 - 1) << 4
+
+                // Set the 2 least significant bits to zero
+                c = (chunk & 15) << 2 // 15    = 2^4 - 1
+
+                base64 += encodings[a] + encodings[b] + encodings[c] + '='
+            }
+
+            return base64
+        }
+    });
+
+</script>
+
+<form>
+    <div style="margin-top:5%;margin-left:3%">
+        Search Name : <input type="text" id="txtName" placeholder="enter name.." />
+        <input type="button" value="Search" id="btnSearch" /><br /><br />
+
+        <div id="resPane"></div>
+    </div>
+    <div style="margin-top:5%;float:right">
+        <label>Please use Arun,David,Paul,Kelly,John to search for already stored Profiles </label>
+    </div>
+</form>
